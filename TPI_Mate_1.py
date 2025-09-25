@@ -4,11 +4,11 @@
 
 import os
 
-numd = 0
-numb = 0
+#numd = 0
+#numb = 0
 seguir = True
-cociente = 1
-nbina = ""
+#cociente = 1
+#nbina = ""
 
 while seguir == True: 
     os.system('cls' if os.name == 'nt' else 'clear')  # limpia la pantalla  
@@ -45,9 +45,28 @@ while seguir == True:
         case 1:
             # Decimal a Binario
             print("\nConversión de Decimal a Binario\n")
+            # --- reinicio de variables para NO arrastrar resultados previos ---
+            cociente = 1
+            nbina = ""
+            comp1 = ""
+            comp2 = ""
+
             numd = int(input("\nIngrese un número decimal: "))    
+
+            # Caso especial: cero
+            if numd == 0:
+                nbina = "0"
+                bits = 8  # mostrarlo en 8 bits por defecto
+                # Relleno manual a 'bits'
+                while len(nbina) < bits:
+                    nbina = "0" + nbina
+                print(f"\nEl número en binario de {bits} bits es: {nbina}")
+                input("\nPresiona ENTER para continuar...")
+                break  # salir del case 1
+
+            # Determinar signo y trabajar con valor absoluto    
             if numd < 0:
-                num_pos = numd * -1                
+                num_pos = -numd                 
                 esNegativo = True
             else:
                 num_pos = numd
@@ -59,8 +78,7 @@ while seguir == True:
                 if residuo == 0:
                     nbina = "0" + nbina
                 else:
-                    nbina = "1" + nbina    
-                    #nbits += 1
+                    nbina = "1" + nbina                        
                 num_pos = cociente
 
             bits = len(nbina)
@@ -79,35 +97,47 @@ while seguir == True:
 
             # Si es negativo, paso a complemento a 1
             if esNegativo:
-                comp1 = ""
-                for bit in nbina:
-                    if bit == "0":
+                i = 0
+                while i < len(nbina):
+                    if nbina[i] == "0":
                         comp1 += "1"
                     else:
                         comp1 += "0"
+                    i += 1
 
-                comp1_lista = list(comp1)  # lo paso a lista porque los strings no son mutables
+                comp1_lista = []
+                j = 0
+                while j < len(comp1):
+                    comp1_lista.append(comp1[j])
+                    j += 1
+
                 llevar = 1
-
-                # Sumo 1 al complemento a 1 para obtener el complemento a 2
-                for i in range(len(comp1_lista) - 1, -1, -1):  # recorro de derecha a izquierda
-                    if comp1_lista[i] == "1" and llevar == 1:
-                        comp1_lista[i] = "0"
+                k = len(comp1_lista) - 1
+                while k >= 0:
+                    if comp1_lista[k] == "1" and llevar == 1:
+                        comp1_lista[k] = "0"
                         llevar = 1
-                    elif comp1_lista[i] == "0" and llevar == 1:
-                        comp1_lista[i] = "1"
+                    elif comp1_lista[k] == "0" and llevar == 1:
+                        comp1_lista[k] = "1"
                         llevar = 0
+                    k -= 1
 
-                comp2 = "".join(comp1_lista)
+                # reconstruir string sin usar join()
+                m = 0
+                while m < len(comp1_lista):
+                    comp2 += comp1_lista[m]
+                    m += 1
+
                 print(f"\nEl número en binario de {bits} bits con signo negativo es: {comp2}")
-
             else:
-                 print(f"\nEl número en binario de {bits} bits es: {nbina}")     
- 
+                print(f"\nEl número en binario de {bits} bits es: {nbina}")
+
                 #numb = bin(numd).replace("0b", "")
                 #print(f"\nEl número decimal {numd} en binario es: {numb}")
 
-            input("\nPresiona ENTER para continuar...")  # pausa antes de limpiar
+
+            input("\nPresiona ENTER para continuar...") # pausa antes de limpiar
+ 
         case 2:
             print("\nConversión de Binario a Decimal")
 
