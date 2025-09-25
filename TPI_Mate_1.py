@@ -4,11 +4,7 @@
 
 import os
 
-#numd = 0
-#numb = 0
 seguir = True
-#cociente = 1
-#nbina = ""
 
 while seguir == True: 
     os.system('cls' if os.name == 'nt' else 'clear')  # limpia la pantalla  
