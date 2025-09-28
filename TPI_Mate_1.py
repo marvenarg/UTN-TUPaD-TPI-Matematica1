@@ -2,12 +2,15 @@
 # Desarrollen un programa que convierta números decimales a binarios y, de forma opcional, también de binario a decimal.
 # Extensión: Validar la entrada y mostrar mensajes de error ante datos incorrectos.
 
+# Se importan las librerias necesarias.
 import os
 
+# Se definen las variables
 seguir = True
 
+# Menú de opciones.
 while seguir == True: 
-    os.system('cls' if os.name == 'nt' else 'clear')  # limpia la pantalla  
+    os.system('cls' if os.name == 'nt' else 'clear')  # Limpia la pantalla  
     #Menu
     ancho = 52
     titulo = "Menú"
@@ -35,19 +38,30 @@ while seguir == True:
     # Línea inferior
     print("-" * ancho)
     
-    opcion = int(input("Ingrese una opción (1-3): "))
-    
+    # Se le solicita al usuario que ingrese una la opción deseada.
+    entrada = input("Ingrese una opción (1-3): ")
+    if not entrada.isdigit(): # Mejora sugerida por Copilot para validar que no se ingresen letras.
+        print("\nOpción inválida: Debe ingresar un número entero en el rango del 1 al 3.") 
+        input("\nPresiona ENTER para continuar...")
+        continue
+    opcion = int(entrada)
+
     match opcion:
         case 1:
-            # Decimal a Binario
-            print("\nConversión de Decimal a Binario\n")
+            # Decimal a Binario (CA2 si es negativo)
+            print("\nConversión de Decimal a Binario\n") # Se muestra un título
             # --- reinicio de variables para NO arrastrar resultados previos ---
             cociente = 1
             nbina = ""
             comp1 = ""
             comp2 = ""
-
-            numd = int(input("\nIngrese un número decimal: "))    
+            # Se solicita al usuario que ingrese un número decimal
+            entrada = input("\nIngrese un número decimal: ")
+            if not entrada.lstrip('-').isdigit():
+                print("\nError: Debe ingresar un número entero válido.")
+                input("\nPresiona ENTER para continuar...")
+                continue
+            numd = int(entrada)        
 
             # Caso especial: cero
             if numd == 0:
@@ -58,7 +72,7 @@ while seguir == True:
                     nbina = "0" + nbina
                 print(f"\nEl número en binario de {bits} bits es: {nbina}")
                 input("\nPresiona ENTER para continuar...")
-                break  # salir del case 1
+                continue  # salir del case 1
 
             # Determinar signo y trabajar con valor absoluto    
             if numd < 0:
@@ -76,7 +90,7 @@ while seguir == True:
                 else:
                     nbina = "1" + nbina                        
                 num_pos = cociente
-
+            # Se determina la cantidad de bits.
             bits = len(nbina)
             if bits <= 8:
                 bits = 8
@@ -91,7 +105,7 @@ while seguir == True:
             while len(nbina) < bits:
                 nbina = "0" + nbina
 
-            # Si es negativo, paso a complemento a 1
+            # Si es negativo, se pasa a complemento a 1 (CA1) y posteriormente a complemento a 2 (CA2)
             if esNegativo:
                 i = 0
                 while i < len(nbina):
@@ -106,7 +120,7 @@ while seguir == True:
                 while j < len(comp1):
                     comp1_lista.append(comp1[j])
                     j += 1
-
+                # Se invierten los bits, si es 1 pasa a 0 y si es 0 pasa a 1
                 llevar = 1
                 k = len(comp1_lista) - 1
                 while k >= 0:
@@ -118,38 +132,35 @@ while seguir == True:
                         llevar = 0
                     k -= 1
 
-                # reconstruir string sin usar join()
+                # Complemento a 2
                 m = 0
                 while m < len(comp1_lista):
                     comp2 += comp1_lista[m]
                     m += 1
 
-                print(f"\nEl número en binario de {bits} bits con signo negativo es: {comp2}")
+                print(f"\nEl número en binario de {bits} bits con signo negativo (CA2) es: {comp2}") # Si es negativo se muestra este mensaje.
             else:
-                print(f"\nEl número en binario de {bits} bits es: {nbina}")
+                print(f"\nEl número en binario de {bits} bits (representación directa) es: {nbina}") # Si es positivo se muestra este mensaje.
 
-                #numb = bin(numd).replace("0b", "")
-                #print(f"\nEl número decimal {numd} en binario es: {numb}")
-
-
-            input("\nPresiona ENTER para continuar...") # pausa antes de limpiar
+            input("\nPresiona ENTER para continuar...") # pausa antes de limpiar la pantalla
  
-        case 2:
-            print("\nConversión de Binario a Decimal")
+        case 2: 
+            # Binario a Decimal
+            print("\nConversión de Binario a Decimal") # Se muestra un título
 
             numb = input("\nIngrese un número binario: ")
             if numb.isdigit() and all(char in '01' for char in numb):
-                numd = int(numb, 2)
+                numd = int(numb, 2) # Se convierte el número binario a decimal
                 print(f"\nEl número binario {numb} en decimal es: {numd}")
-            else:
+            else: # En el caso que se ingrese un número inválido se muestra un mensaje.
                 print("\nError: Por favor, ingrese un número binario válido (solo se permiten 0 y 1).\n")
 
-            input("\nPresiona ENTER para continuar...")             
+            input("\nPresiona ENTER para continuar...") # pausa antes de limpiar la pantalla            
         case 3:
-            print("\nSaliendo del programa...\n")
+            print("\nSaliendo del programa...\n") # Se muestra un mensaje antes de salir del programa.
             seguir = False
         case _:
-            print("\nOpción no válida. Por favor, elija una opción del 1 al 3.")
+            print("\nOpción no válida. Por favor, elija una opción del 1 al 3.") # En el caso que se ingrese una opción no válida, se muestra este mensaje.
             
-            input("\nPresiona ENTER para continuar...")  
+            input("\nPresiona ENTER para continuar...") # pausa antes de limpiar la pantalla
 
