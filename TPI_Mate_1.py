@@ -149,7 +149,7 @@ while seguir == True:
             print("\nConversión de Binario a Decimal") # Se muestra un título
 
             numb = input("\nIngrese un número binario: ")
-            if numb.isdigit() and all(char in '01' for char in numb):
+            if numb.isdigit() and all(char in '01' for char in numb): # Se valida que sólo se ingresen números, y que sean 0 o 1
                 numd = int(numb, 2) # Se convierte el número binario a decimal
                 print(f"\nEl número binario {numb} en decimal es: {numd}")
             else: # En el caso que se ingrese un número inválido se muestra un mensaje.
